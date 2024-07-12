@@ -1,0 +1,14 @@
+C:\Users\gamin\SecureApp\SecureApp\bin\Debug\FinancialAid.exe.config
+C:\Users\gamin\SecureApp\SecureApp\bin\Debug\FinancialAid.exe
+C:\Users\gamin\SecureApp\SecureApp\bin\Debug\FinancialAid.pdb
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\SecureApp.csproj.AssemblyReference.cache
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\SecureApp.csproj.SuggestedBindingRedirects.cache
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.FinancialAdvisor.resources
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.PortfolioForm.resources
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.Properties.Resources.resources
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.RiskQuizForm.resources
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.UserForm.resources
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\SecureApp.csproj.GenerateResource.cache
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\SecureApp.csproj.CoreCompileInputs.cache
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.exe
+C:\Users\gamin\SecureApp\SecureApp\obj\Debug\FinancialAid.pdb
