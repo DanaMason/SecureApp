@@ -1,0 +1,15 @@
+Hello,
+
+I think for a plan I could probably get the password retrieval and encryption system done this week. Then, for next week I could work on hashing and the 2-Step Authentication. Then for the third week I could implement the database feature in it (for retrieving the password and the account amount). Finally, for the fourth week, I could use it to finalize the app, ensure everything is setup correctly, and finally make the presentation. 
+
+I think that I would need to probably compromise with the time requirement and put things like SQL Injection and XSS prevention in the backseat for this project. Additionally, it would probably be a demonstration application on secure features, and not very functional. It would likely just display a fixed figure. Maybe with a deposit/withdrawal feature if time permits.
+
+Additionally, I think I would be able to complete these new criteria because I have experience with password retrieval and encryption from this class, and I have prior file manipulation experience. I would need to learn about the authentication and hashing but that would be part of the learning process. 
+
+Furthermore, I believe that this would accurately reflect what I have learned this semester about some security related topics, as well as prove my knowledge expansion on my own on programming things I haven't worked with before.
+
+Any thoughts on this would be greatly appreciated and if that all sounds good to you, I'll get started on it. If not, please let me know your thoughts/comments/concerns.
+
+Thank you!
+
+Mason Dana
