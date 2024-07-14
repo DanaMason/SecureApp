@@ -20,4 +20,6 @@ namespace SecureAppProject
 }
 
 // Now must do things like establish a sign up user thing for creating Username-Password combinations, as well as
-// Multi-factor authentication, 
+// Multi-factor authentication, SecureStrings, Error Handling, File Seperation, POTENTIALLY logging, development of app,
+// and finally, just ensuring proper password and username life-cycle (especially storage and successful retrieval/collection).
+// Looking into how to implement HTTPS and POTENTIALLY Website attack preventions is also worthwhile to look at.
