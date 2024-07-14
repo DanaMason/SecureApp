@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
+
 namespace SecureAppProject
 {
     internal static class Program
@@ -15,3 +18,6 @@ namespace SecureAppProject
         }
     }
 }
+
+// Now must do things like establish a sign up user thing for creating Username-Password combinations, as well as
+// Multi-factor authentication, 

@@ -14,12 +14,6 @@ namespace SecureAppProject
 
     public partial class PasswordCollection : Form
     {
-
-        private Encryption _encrypt;
-        private Decryption _decrypt;
-
-        string EncryptedUsername, EncryptedPassword;
-
         public PasswordCollection()
         {
             InitializeComponent();
@@ -27,13 +21,6 @@ namespace SecureAppProject
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            EncryptedUsername = _encrypt.encrypt(UsernameText.Text);
-            EncryptedPassword = _decrypt.decrypt(PasswordText.Text);
-
-            // Then it will proceed to Hash the encoded passwords.
-
-            // Send the Encrypted Information to a database text file later on.
-
             return;
         }
 
@@ -47,12 +34,5 @@ namespace SecureAppProject
             return;
 
         }
-
-        /*public double HashCode(7, 13, 17, 19)
-        {
-
-        }*/
-
     }
-
 }
