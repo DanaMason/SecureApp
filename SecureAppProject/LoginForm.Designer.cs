@@ -30,7 +30,7 @@
         {
             UsernameText = new TextBox();
             PasswordText = new TextBox();
-            SaveButton = new Button();
+            TheSaveButton = new Button();
             UsernameLabel = new Label();
             PasswordLabel = new Label();
             SignUpButton = new LinkLabel();
@@ -52,15 +52,15 @@
             PasswordText.TabIndex = 1;
             PasswordText.TextChanged += PasswordText_TextChanged;
             // 
-            // SaveButton
+            // TheSaveButton
             // 
-            SaveButton.Location = new Point(170, 208);
-            SaveButton.Name = "SaveButton";
-            SaveButton.Size = new Size(229, 54);
-            SaveButton.TabIndex = 2;
-            SaveButton.Text = "Save";
-            SaveButton.UseVisualStyleBackColor = true;
-            SaveButton.Click += SaveButton_Click;
+            TheSaveButton.Location = new Point(170, 208);
+            TheSaveButton.Name = "TheSaveButton";
+            TheSaveButton.Size = new Size(229, 54);
+            TheSaveButton.TabIndex = 2;
+            TheSaveButton.Text = "Save";
+            TheSaveButton.UseVisualStyleBackColor = true;
+            TheSaveButton.Click += SaveButton_Click;
             // 
             // UsernameLabel
             // 
@@ -91,7 +91,7 @@
             SignUpButton.Text = "Sign Up";
             SignUpButton.LinkClicked += SignUpButton_LinkClicked;
             // 
-            // PasswordCollection
+            // LoginForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -99,10 +99,10 @@
             Controls.Add(SignUpButton);
             Controls.Add(PasswordLabel);
             Controls.Add(UsernameLabel);
-            Controls.Add(SaveButton);
+            Controls.Add(TheSaveButton);
             Controls.Add(PasswordText);
             Controls.Add(UsernameText);
-            Name = "PasswordCollection";
+            Name = "LoginForm";
             Text = "Secure Software Application";
             ResumeLayout(false);
             PerformLayout();
@@ -112,7 +112,7 @@
 
         private TextBox UsernameText;
         private TextBox PasswordText;
-        private Button SaveButton;
+        private Button TheSaveButton;
         private Label UsernameLabel;
         private Label PasswordLabel;
         private LinkLabel SignUpButton;
