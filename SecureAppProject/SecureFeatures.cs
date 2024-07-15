@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Security;
+using System.Runtime.InteropServices;
 
 namespace SecureAppProject
 {
@@ -202,12 +204,18 @@ namespace SecureAppProject
         }
 
         // Verifies the password for a given username.
-        public static bool VerifyPassword(string filename, string username, string password)
+        public static bool VerifyPassword(string filename, string username, SecureString securePassword)
         {
-            using (var stream = new FileStream(filename, FileMode.Open))
-            using (var reader = new BinaryReader(stream))
-            { 
-                while (reader.BaseStream.Position < reader.BaseStream.Length)
+            IntPtr passwordBSTR = Marshal.SecureStringToBSTR(securePassword);
+            string password = Marshal.PtrToStringBSTR(passwordBSTR);
+
+            try
+            {
+                using (var stream = new FileStream(filename, FileMode.Open))
+                using (var reader = new BinaryReader(stream))
+
+                {
+                    while (reader.BaseStream.Position < reader.BaseStream.Length)
                     {
                         // Reads the information for comparison.
 
@@ -238,7 +246,7 @@ namespace SecureAppProject
                             var decryptedData = Decryption(encryptedData, aesKey, aesIV);
                             var salt = new byte[SaltSize];
                             var storedSignedHash = new byte[decryptedData.Length - SaltSize];
-                            
+
                             Buffer.BlockCopy(decryptedData, 0, salt, 0, SaltSize);
                             Buffer.BlockCopy(decryptedData, SaltSize, storedSignedHash, 0, storedSignedHash.Length);
 
@@ -251,11 +259,47 @@ namespace SecureAppProject
                             }
                         }
                     }
+                }
+
+                return false;
+
             }
 
-            // Reached if the use isn't found.
-            return false; 
+            finally
+            {
+                Marshal.ZeroFreeBSTR(passwordBSTR);
+            }
 
+        }
+
+        // Function to connect the SignUp Process functions.
+        public static void SignUp(string filename, string username, SecureString SecurePassword)
+        {
+            IntPtr passwordBSTR = Marshal.SecureStringToBSTR(SecurePassword);
+            string password = Marshal.PtrToStringBSTR(passwordBSTR);
+
+            try
+            {
+                RSAParameters rsaKey = GenerateUserRSAKey();
+
+                byte[] aesKey;
+                byte[] aesIV;
+                byte[] encryptedData = HashSignAndEncrypt(password, rsaKey, out aesKey, out aesIV);
+
+                StorePasswordToFile(filename, username, encryptedData, aesKey, aesIV, rsaKey);
+            }
+
+            finally
+            {
+                Marshal.ZeroFreeBSTR(passwordBSTR);
+            }
+        }
+
+        // Function to ensure the given Username is unique.
+        public static bool DoesUsernameExist(string filename, string username)
+        {
+            var lines = System.IO.File.ReadAllLines(filename);
+            return lines.Any(line => line.Split(',')[0] == username);
         }
 
 
