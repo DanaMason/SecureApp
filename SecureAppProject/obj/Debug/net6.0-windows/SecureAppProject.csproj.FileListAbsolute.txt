@@ -4,7 +4,6 @@ C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProj
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.AssemblyInfoInputs.cache
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.AssemblyInfo.cs
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.csproj.CoreCompileInputs.cache
-C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.PasswordCollection.resources
 C:\Users\gamin\SecureApp\SecureAppProject\bin\Debug\net6.0-windows\SecureAppProject.exe
 C:\Users\gamin\SecureApp\SecureAppProject\bin\Debug\net6.0-windows\SecureAppProject.deps.json
 C:\Users\gamin\SecureApp\SecureAppProject\bin\Debug\net6.0-windows\SecureAppProject.runtimeconfig.json
@@ -15,3 +14,5 @@ C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\refint\Secure
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.pdb
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.genruntimeconfig.cache
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\ref\SecureAppProject.dll
+C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.LoginForm.resources
+C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.SignUpForm.resources

@@ -1,6 +1,6 @@
 ﻿namespace SecureAppProject
 {
-    partial class PasswordCollection
+    partial class LoginForm
     {
         /// <summary>
         /// Required designer variable.
@@ -33,6 +33,7 @@
             SaveButton = new Button();
             UsernameLabel = new Label();
             PasswordLabel = new Label();
+            SignUpButton = new LinkLabel();
             SuspendLayout();
             // 
             // UsernameText
@@ -79,11 +80,23 @@
             PasswordLabel.TabIndex = 4;
             PasswordLabel.Text = "Please Enter Your Password:";
             // 
+            // SignUpButton
+            // 
+            SignUpButton.AutoSize = true;
+            SignUpButton.Location = new Point(510, 19);
+            SignUpButton.Name = "SignUpButton";
+            SignUpButton.Size = new Size(61, 20);
+            SignUpButton.TabIndex = 5;
+            SignUpButton.TabStop = true;
+            SignUpButton.Text = "Sign Up";
+            SignUpButton.LinkClicked += SignUpButton_LinkClicked;
+            // 
             // PasswordCollection
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(582, 289);
+            Controls.Add(SignUpButton);
             Controls.Add(PasswordLabel);
             Controls.Add(UsernameLabel);
             Controls.Add(SaveButton);
@@ -102,5 +115,6 @@
         private Button SaveButton;
         private Label UsernameLabel;
         private Label PasswordLabel;
+        private LinkLabel SignUpButton;
     }
 }
