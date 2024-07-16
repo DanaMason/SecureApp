@@ -30,7 +30,6 @@ namespace SecureAppProject
             }
 
             return salt;
-
         }
 
 
@@ -59,7 +58,6 @@ namespace SecureAppProject
         {
             using (Aes aes = Aes.Create())
             {
-
                 // The following sets the correct Key and IV to the previously calculated values.
 
                 aes.Key = AESKey;
@@ -71,12 +69,10 @@ namespace SecureAppProject
                 using (var memoryStream = new MemoryStream())
                 using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                 {
-
                     cryptoStream.Write(data, 0, data.Length);
                     cryptoStream.Close();
 
                     return memoryStream.ToArray();
-
                 }
             }
         }
@@ -203,7 +199,10 @@ namespace SecureAppProject
             }
         }
 
-        // Verifies the password for a given username.
+        // Verifies the password for a given username. 
+                
+        // Mid Testing ---- Some changes in signupform that are commented.
+        
         public static bool VerifyPassword(string filename, string username, SecureString securePassword)
         {
             IntPtr passwordBSTR = Marshal.SecureStringToBSTR(securePassword);
@@ -212,50 +211,64 @@ namespace SecureAppProject
             try
             {
                 using (var stream = new FileStream(filename, FileMode.Open))
-                using (var reader = new BinaryReader(stream))
-
                 {
-                    while (reader.BaseStream.Position < reader.BaseStream.Length)
+                    if (stream.Length == 0)
                     {
-                        // Reads the information for comparison.
+                        MessageBox.Show("The file is empty.");
+                        return false;
+                    }
 
-                        var storedUsername = reader.ReadString();
-                        var aesKeyLength = reader.ReadInt32();
-                        var aesKey = reader.ReadBytes(aesKeyLength);
-                        var aesIVLength = reader.ReadInt32();
-                        var aesIV = reader.ReadBytes(aesIVLength);
-                        var rsaModulusLength = reader.ReadInt32();
-                        var rsaModulus = reader.ReadBytes(rsaModulusLength);
-                        var rsaExponentLength = reader.ReadInt32();
-                        var rsaExponent = reader.ReadBytes(rsaExponentLength);
-                        var encryptedDataLength = reader.ReadInt32();
-                        var encryptedData = reader.ReadBytes(encryptedDataLength);
-
-                        // If statement to decrypt the data, rehash/salt/encrypt it, and compare the two.
-
-                        if (storedUsername == username)
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        while (reader.BaseStream.Position < reader.BaseStream.Length)
                         {
-                            var rsaParameters = new RSAParameters
+                            // Reads the information for comparison.
+
+                            var storedUsername = reader.ReadString();
+                            var aesKeyLength = reader.ReadInt32();
+                            var aesKey = reader.ReadBytes(aesKeyLength);
+                            var aesIVLength = reader.ReadInt32();
+                            var aesIV = reader.ReadBytes(aesIVLength);
+                            var rsaModulusLength = reader.ReadInt32();
+                            var rsaModulus = reader.ReadBytes(rsaModulusLength);
+                            var rsaExponentLength = reader.ReadInt32();
+                            var rsaExponent = reader.ReadBytes(rsaExponentLength);
+                            var encryptedDataLength = reader.ReadInt32();
+                            var encryptedData = reader.ReadBytes(encryptedDataLength);
+
+                            // If statement to decrypt the data, rehash/salt/encrypt it, and compare the two.
+
+                            if (storedUsername == username)
                             {
-                                Modulus = rsaModulus,
-                                Exponent = rsaExponent
-                            };
+                                var rsaParameters = new RSAParameters
+                                {
+                                    Modulus = rsaModulus,
+                                    Exponent = rsaExponent
+                                };
 
-                            // Decrypts and re-encrypts.
+                                // Decrypts and re-encrypts.
 
-                            var decryptedData = Decryption(encryptedData, aesKey, aesIV);
-                            var salt = new byte[SaltSize];
-                            var storedSignedHash = new byte[decryptedData.Length - SaltSize];
+                                var decryptedData = Decryption(encryptedData, aesKey, aesIV);
+                                MessageBox.Show($"Decreyption information: {Convert.ToBase64String(decryptedData)}");   // Decrypted information is returned
 
-                            Buffer.BlockCopy(decryptedData, 0, salt, 0, SaltSize);
-                            Buffer.BlockCopy(decryptedData, SaltSize, storedSignedHash, 0, storedSignedHash.Length);
+                                var salt = new byte[SaltSize];
+                                var storedSignedHash = new byte[decryptedData.Length - SaltSize];
 
-                            var hashToVerify = HashPassword(password, salt);
+                                Buffer.BlockCopy(decryptedData, 0, salt, 0, SaltSize);
+                                Buffer.BlockCopy(decryptedData, SaltSize, storedSignedHash, 0, storedSignedHash.Length);
 
-                            using (var rsa = RSA.Create())
-                            {
-                                rsa.ImportParameters(rsaParameters);
-                                return rsa.VerifyData(hashToVerify, storedSignedHash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                                MessageBox.Show($"Salt: {Convert.ToBase64String(salt)}");                               // This information is the decrypted information, at least what was returned.
+                                MessageBox.Show($"Stored Signed Hash: {Convert.ToBase64String(storedSignedHash)}");     // THIS WAS EMPTY
+
+                                var hashToVerify = HashPassword(password, salt);
+                                MessageBox.Show($"Hash to Verify: {Convert.ToBase64String(hashToVerify)}");             // This gave a value to match.
+
+                                using (var rsa = RSA.Create())                                                          
+                                {
+                                    rsa.ImportParameters(rsaParameters);
+                                    return rsa.VerifyData(hashToVerify, storedSignedHash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                                    // This was false.
+                                }
                             }
                         }
                     }
@@ -269,8 +282,100 @@ namespace SecureAppProject
             {
                 Marshal.ZeroFreeBSTR(passwordBSTR);
             }
-
         }
+
+        /*
+        // Temporary Testinig Version:
+        public static bool VerifyPassword(string filename, string username, SecureString securePassword)
+        {
+            IntPtr passwordBSTR = Marshal.SecureStringToBSTR(securePassword);
+            string password = Marshal.PtrToStringBSTR(passwordBSTR);
+            try
+            {
+                using (var stream = new FileStream(filename, FileMode.Open))
+                {
+                    if (stream.Length == 0)
+                    {
+                        MessageBox.Show("The file is empty.");
+                        return false;
+                    }
+
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        MessageBox.Show("Made it3! ");
+
+                        while (reader.BaseStream.Position < reader.BaseStream.Length)
+                        {
+                            MessageBox.Show(" Made it4! ");
+                            // Reads the information for comparison.
+                            var storedUsername = reader.ReadString();
+                            MessageBox.Show($"Stored Username: {storedUsername}");
+
+                            var aesKeyLength = reader.ReadInt32();
+                            var aesKey = reader.ReadBytes(aesKeyLength);
+                            MessageBox.Show($"AES Key: {Convert.ToBase64String(aesKey)}");
+
+                            var aesIVLength = reader.ReadInt32();
+                            var aesIV = reader.ReadBytes(aesIVLength);
+                            MessageBox.Show($"AES IV: {Convert.ToBase64String(aesIV)}");
+
+                            var rsaModulusLength = reader.ReadInt32();
+                            var rsaModulus = reader.ReadBytes(rsaModulusLength);
+                            MessageBox.Show($"RSA Modulus: {Convert.ToBase64String(rsaModulus)}");
+
+                            var rsaExponentLength = reader.ReadInt32();
+                            var rsaExponent = reader.ReadBytes(rsaExponentLength);
+                            MessageBox.Show($"RSA Exponent: {Convert.ToBase64String(rsaExponent)}");
+
+                            var encryptedDataLength = reader.ReadInt32();
+                            var encryptedData = reader.ReadBytes(encryptedDataLength);
+                            MessageBox.Show($"Encrypted Data: {Convert.ToBase64String(encryptedData)}");
+
+                            // If statement to decrypt the data, rehash/salt/encrypt it, and compare the two.
+                            if (storedUsername == username)
+                            {
+                                var rsaParameters = new RSAParameters
+                                {
+                                    Modulus = rsaModulus,
+                                    Exponent = rsaExponent
+                                };
+
+                                // Decrypts and re-encrypts.
+                                var decryptedData = Decryption(encryptedData, aesKey, aesIV);
+                                MessageBox.Show($"Decrypted Data: {Convert.ToBase64String(decryptedData)}");
+
+
+                                var salt = new byte[SaltSize];
+                                var storedSignedHash = new byte[decryptedData.Length - SaltSize];
+
+                                Buffer.BlockCopy(decryptedData, 0, salt, 0, SaltSize);
+                                Buffer.BlockCopy(decryptedData, SaltSize, storedSignedHash, 0, storedSignedHash.Length);
+
+                                MessageBox.Show($"Salt: {Convert.ToBase64String(salt)}");
+                                MessageBox.Show($"Stored Signed Hash: {Convert.ToBase64String(storedSignedHash)}");
+
+                                var hashToVerify = HashPassword(password, salt);
+                                MessageBox.Show($"Hash to Verify: {Convert.ToBase64String(hashToVerify)}");
+
+                                using (var rsa = RSA.Create())
+                                {
+                                    rsa.ImportParameters(rsaParameters);
+                                    bool result = rsa.VerifyData(hashToVerify, storedSignedHash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                                    MessageBox.Show($"Verification Result: {result}");
+                                    return result;
+                                }
+                            }
+                        }
+
+                        return false;
+                    }
+                }
+            }
+            finally
+            {
+                Marshal.ZeroFreeBSTR(passwordBSTR);
+            }
+        }*/
 
         // Function to connect the SignUp Process functions.
         public static void SignUp(string filename, string username, SecureString SecurePassword)
@@ -298,10 +403,8 @@ namespace SecureAppProject
         // Function to ensure the given Username is unique.
         public static bool DoesUsernameExist(string filename, string username)
         {
-            var lines = System.IO.File.ReadAllLines(filename);
+            var lines = File.ReadAllLines(filename);
             return lines.Any(line => line.Split(',')[0] == username);
         }
-
-
     }
 }

@@ -104,6 +104,7 @@
             Controls.Add(UsernameText);
             Name = "LoginForm";
             Text = "Secure Software Application";
+            Load += LoginForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

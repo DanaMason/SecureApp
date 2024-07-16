@@ -20,12 +20,13 @@ namespace SecureAppProject
         {
             InitializeComponent();
         }
-        
+
         // Checks the information given to login.
         private void SaveButton_Click(object sender, EventArgs e)
         {
             string username = UsernameText.Text;
             SecureString securePassword = new SecureString();
+            string filename = "secureFile.dat";
 
             foreach (char x in PasswordText.Text)
             {
@@ -33,8 +34,6 @@ namespace SecureAppProject
             }
 
             securePassword.MakeReadOnly();
-
-            string filename = "secureFile.dat";
 
             bool isVerified = SecureFeatures.VerifyPassword(filename, username, securePassword);
 
@@ -46,6 +45,8 @@ namespace SecureAppProject
             {
                 MessageBox.Show("Error with username or password!");
             }
+
+
 
             return;
 
@@ -66,6 +67,21 @@ namespace SecureAppProject
         {
             SignUpForm signUpForm = new SignUpForm();
             signUpForm.Show();
+        }
+
+        // When the initial form is loaded
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string directory = Path.Combine(localAppData, "SecureAppProject");
+            string filename = Path.Combine(directory, "secureFile.dat");
+
+            Directory.CreateDirectory(directory);
+
+            if (!File.Exists(filename))
+            {
+                using (FileStream x = File.Create(filename))   {}   // Creates empty file if required.
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security;
 using System.Runtime.InteropServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace SecureAppProject
 {
@@ -23,58 +24,55 @@ namespace SecureAppProject
         private void SaveButton_Click(object sender, EventArgs e)
         {
             string username = UsernameButton.Text;
-            string password = PasswordButton.Text;
+            string filename = "secureFile.dat";
+            InputValidation inputValidation = new InputValidation();
             SecureString securePassword = new SecureString();
-            
+
             foreach (char x in PasswordButton.Text)
             {
                 securePassword.AppendChar(x);
             }
+             
+            if (!inputValidation.ValidatePassword(securePassword))
+            {
+                MessageBox.Show("Password requirements not met! Please ensure you are meeting the criteria: \n\t* Have at least 12 characters. \n\t* Have at least 1 symbol. \n\t* Have at least 1 Uppercase and Lowercase Letter. \n\t* Have at least 1 number.");
+                return;
+            }
 
             securePassword.MakeReadOnly();
-
-            string filename = "secureFile.dat";
-
-            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$";
-
-
-            if (!System.Text.RegularExpressions.Regex.IsMatch(password, passwordPattern)
-            {
-                MessageBox.Show("Password requirements not met! Please retry meeting the criteria: * Have at least 12 characters. * Have at least 1 symbol. * Have at least 1 Uppercase and Lowercase. * Have at least 1 number.");
-            }
-
-            if(SecureFeatures.DoesUsernameExist(filename, username)
-            {
-                MessageBox.Show("Please select a different Username. The chosen Username already exists.");
-            }
+            
+            SecureFeatures.SignUp(filename, username, securePassword);
 
             bool isVerified = SecureFeatures.VerifyPassword(filename, username, securePassword);
 
             if (isVerified)
             {
-                MessageBox.Show("Congratulations! Password and Username are available. Please continue on to Multi-Factor Authorization Setup..");
+                MessageBox.Show("Congratulations! Password and Username are available. Please continue on to Multi-Factor Authorization Setup.");
             }
+
             else
             {
-                MessageBox.Show("Error!");
+                MessageBox.Show("Oh no! An error occured.");
             }
             
             return;
 
         }
+
         private void UsernameButton_TextChanged(object sender, EventArgs e)
         {
-
+            return;
         }
 
         private void PasswordButton_TextChanged(object sender, EventArgs e)
         {
-
+            return;
         }
 
         private void BackButton_Click_1(object sender, EventArgs e)
         {
-            
+            this.Close();
+            return;
         }
     }
 }
