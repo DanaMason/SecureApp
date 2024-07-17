@@ -36,7 +36,7 @@ namespace SecureAppProject
             try
             {
                 secureStringPointer = Marshal.SecureStringToGlobalAllocUnicode(securePassword);
-                
+
                 for (int i = 0; i < securePassword.Length; i++)
                 {
                     char c = (char)Marshal.ReadInt16(secureStringPointer, i * 2);
@@ -52,7 +52,7 @@ namespace SecureAppProject
 
                     if (hasUpper && hasLower && hasDigit && hasSpecial)
                     {
-                        return true; 
+                        return true;
                     }
                 }
             }
@@ -64,25 +64,5 @@ namespace SecureAppProject
 
             return false;
         }
-
-            /* testing
-                    public string ConvertToUnsecureString(SecureString securePassword)
-                    {
-                        if (securePassword == null)
-                            throw new ArgumentNullException(nameof(securePassword));
-
-                        IntPtr unmanagedString = IntPtr.Zero;
-                        try
-                        {
-                            unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(securePassword);
-                            return Marshal.PtrToStringUni(unmanagedString);
-                        }
-                        finally
-                        {
-                            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
-                        }
-                    }
-            */
-
     }
 }

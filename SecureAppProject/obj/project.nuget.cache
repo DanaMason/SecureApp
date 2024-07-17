@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "6bpLKfUN8F3cFzqnkJUj8xoz1cfjGaEJwoZiUutAmdYJ984trSANC3MpLx+rfIwYqapf0LljBsTgsTROTWh4vA==",
+  "dgSpecHash": "4+sHz7L+25bOgk3aMrpNdAcWKzXS9ItVdMXC1CjqrEJHqh2JN29i6RFjidtxgRy2j0iByGwhl1jnn8lYo7JgYQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\gamin\\SecureApp\\SecureAppProject\\SecureAppProject.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\gamin\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\gamin\\.nuget\\packages\\otp.net\\1.4.0\\otp.net.1.4.0.nupkg.sha512",
+    "C:\\Users\\gamin\\.nuget\\packages\\qrcoder\\1.6.0\\qrcoder.1.6.0.nupkg.sha512",
+    "C:\\Users\\gamin\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
