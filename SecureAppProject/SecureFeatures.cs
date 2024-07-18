@@ -178,7 +178,7 @@ namespace SecureAppProject
         }
 
         // Stores the recently created data into a file.
-        public static void StorePasswordToFile(string filename, string username, byte[] encryptedData, byte[] aesKey, byte[] aesIV, RSAParameters rsaKey, string totpSecret)
+        public static void StorePasswordToFile(string filename, string username, byte[] encryptedData, byte[] aesKey, byte[] aesIV, RSAParameters rsaKey)
         {
             using (var stream = new FileStream(filename, FileMode.Create))
             using (var writer = new BinaryWriter(stream))
@@ -196,13 +196,12 @@ namespace SecureAppProject
                 writer.Write(rsaKey.Exponent);
                 writer.Write(encryptedData.Length);
                 writer.Write(encryptedData);
-                writer.Write(totpSecret);
             }
         }
 
         // Verifies the password for a given username. 
         
-        public static bool VerifyPassword(string filename, string username, SecureString securePassword, string totpCode)
+        public static bool VerifyPassword(string filename, string username, SecureString securePassword)
         {
             IntPtr passwordBSTR = Marshal.SecureStringToBSTR(securePassword);
             string password = Marshal.PtrToStringBSTR(passwordBSTR);
@@ -234,8 +233,7 @@ namespace SecureAppProject
                             var rsaExponent = reader.ReadBytes(rsaExponentLength);
                             var encryptedDataLength = reader.ReadInt32();
                             var encryptedData = reader.ReadBytes(encryptedDataLength);
-                            var totpSecret = reader.ReadString();
-
+                            
                             // If statement to decrypt the data, rehash/salt/encrypt it, and compare the two.
 
                             if (storedUsername == username)
@@ -249,8 +247,7 @@ namespace SecureAppProject
                                 // Decrypts and re-encrypts.
 
                                 var decryptedData = Decryption(encryptedData, aesKey, aesIV);
-                                MessageBox.Show($"Decreyption information: {Convert.ToBase64String(decryptedData)}");   // Decrypted information is returned
-
+                                
                                 var salt = new byte[SaltSize];
                                 var storedSignedHash = new byte[decryptedData.Length - SaltSize];
 
@@ -264,7 +261,7 @@ namespace SecureAppProject
                                     rsa.ImportParameters(rsaParameters);
                                     bool isPasswordVerified = rsa.VerifyData(hashToVerify, storedSignedHash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-                                    if (isPasswordVerified && MultiFactorAuthentication.ValidateTotp(totpSecret, totpCode))
+                                    if (isPasswordVerified)
                                     {
                                         return true;
                                     }
@@ -304,10 +301,7 @@ namespace SecureAppProject
                 byte[] aesIV;
                 byte[] encryptedData = HashSignAndEncrypt(password, rsaKey, out aesKey, out aesIV);
 
-                string totpSecret = MultiFactorAuthentication.GenerateTotpSecret();
-                Bitmap qrCode = MultiFactorAuthentication.GenerateTotpQrCode(username, totpSecret);
-
-                StorePasswordToFile(filename, username, encryptedData, aesKey, aesIV, rsaKey, totpSecret);
+                StorePasswordToFile(filename, username, encryptedData, aesKey, aesIV, rsaKey);
             }
 
             finally
