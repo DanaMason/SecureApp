@@ -28,28 +28,39 @@ namespace SecureAppProject
             SecureString securePassword = new SecureString();
             string filename = "secureFile.dat";
 
-            foreach (char x in PasswordText.Text)
+            foreach (char x in PasswordText.Text)   // Encrypts given password
             {
                 securePassword.AppendChar(x);
             }
 
             securePassword.MakeReadOnly();
 
-            bool isVerified = SecureFeatures.VerifyPassword(filename, username, securePassword);
-
-            if (isVerified)
+            MFAInputForm mfaCodeInput = new MFAInputForm();
+            if (mfaCodeInput.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Username and Password are correct, now please finish by using Multi-Factor Authentication.");
+                string mfaCode = mfaCodeInput.Input;
+
+                bool isMfaVerified = SecureFeatures.VerifyPassword(filename, username, securePassword, mfaCode);    // If mfa and password are correct, login is complete.
+
+                if (isMfaVerified)
+                {
+                    MessageBox.Show("Login successful! Put your post-login secure information here! :D");
+                        // Can later continue onto post-login information...
+                    this.Hide();
+                }
+
+                else
+                {
+                    MessageBox.Show("Incorrect Credentials.");
+                }
             }
+
             else
             {
-                MessageBox.Show("Error with username or password!");
+                MessageBox.Show("Multi-Factor code input was canceled.");
             }
 
-
-
             return;
-
         }
 
         private void UsernameText_TextChanged(object sender, EventArgs e)
@@ -80,7 +91,7 @@ namespace SecureAppProject
 
             if (!File.Exists(filename))
             {
-                using (FileStream x = File.Create(filename))   {}   // Creates empty file if required.
+                using (FileStream x = File.Create(filename)) { }   // Creates empty file if required.
             }
         }
     }

@@ -4,6 +4,12 @@
     <Compile Update="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="MFAInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MFASetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="SignUpForm.cs">
       <SubType>Form</SubType>
     </Compile>

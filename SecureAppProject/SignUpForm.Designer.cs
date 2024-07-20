@@ -39,17 +39,21 @@
             // 
             // SaveButton
             // 
+            SaveButton.BackColor = Color.Black;
+            SaveButton.ForeColor = Color.DarkRed;
             SaveButton.Location = new Point(367, 202);
             SaveButton.Name = "SaveButton";
             SaveButton.Size = new Size(159, 44);
             SaveButton.TabIndex = 0;
-            SaveButton.Text = "Save";
-            SaveButton.UseVisualStyleBackColor = true;
+            SaveButton.Text = "Continue";
+            SaveButton.UseVisualStyleBackColor = false;
             SaveButton.Click += SaveButton_Click;
             // 
             // UsernameLabel
             // 
             UsernameLabel.AutoSize = true;
+            UsernameLabel.BackColor = Color.Black;
+            UsernameLabel.ForeColor = Color.DarkRed;
             UsernameLabel.Location = new Point(56, 84);
             UsernameLabel.Name = "UsernameLabel";
             UsernameLabel.Size = new Size(294, 20);
@@ -59,6 +63,8 @@
             // PasswordLabel
             // 
             PasswordLabel.AutoSize = true;
+            PasswordLabel.BackColor = Color.Black;
+            PasswordLabel.ForeColor = Color.DarkRed;
             PasswordLabel.Location = new Point(53, 143);
             PasswordLabel.Name = "PasswordLabel";
             PasswordLabel.Size = new Size(297, 20);
@@ -67,6 +73,7 @@
             // 
             // UsernameButton
             // 
+            UsernameButton.BackColor = Color.DarkRed;
             UsernameButton.Location = new Point(367, 81);
             UsernameButton.Name = "UsernameButton";
             UsernameButton.Size = new Size(159, 27);
@@ -75,6 +82,7 @@
             // 
             // PasswordButton
             // 
+            PasswordButton.BackColor = Color.DarkRed;
             PasswordButton.Location = new Point(367, 136);
             PasswordButton.Name = "PasswordButton";
             PasswordButton.Size = new Size(159, 27);
@@ -84,7 +92,9 @@
             // WelcomeLabel
             // 
             WelcomeLabel.AutoSize = true;
+            WelcomeLabel.BackColor = Color.Black;
             WelcomeLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            WelcomeLabel.ForeColor = Color.DarkRed;
             WelcomeLabel.Location = new Point(142, 30);
             WelcomeLabel.Name = "WelcomeLabel";
             WelcomeLabel.Size = new Size(274, 28);
@@ -93,18 +103,21 @@
             // 
             // BackButton
             // 
+            BackButton.BackColor = Color.Black;
+            BackButton.ForeColor = Color.DarkRed;
             BackButton.Location = new Point(26, 202);
             BackButton.Name = "BackButton";
             BackButton.Size = new Size(159, 44);
             BackButton.TabIndex = 7;
             BackButton.Text = "Back";
-            BackButton.UseVisualStyleBackColor = true;
+            BackButton.UseVisualStyleBackColor = false;
             BackButton.Click += BackButton_Click_1;
             // 
             // SignUpForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Black;
             ClientSize = new Size(555, 278);
             Controls.Add(BackButton);
             Controls.Add(WelcomeLabel);

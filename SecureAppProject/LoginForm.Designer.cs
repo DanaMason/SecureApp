@@ -38,6 +38,7 @@
             // 
             // UsernameText
             // 
+            UsernameText.BackColor = Color.DarkRed;
             UsernameText.Location = new Point(263, 59);
             UsernameText.Name = "UsernameText";
             UsernameText.Size = new Size(308, 27);
@@ -46,6 +47,7 @@
             // 
             // PasswordText
             // 
+            PasswordText.BackColor = Color.DarkRed;
             PasswordText.Location = new Point(263, 145);
             PasswordText.Name = "PasswordText";
             PasswordText.Size = new Size(308, 27);
@@ -54,17 +56,21 @@
             // 
             // TheSaveButton
             // 
+            TheSaveButton.BackColor = Color.Black;
+            TheSaveButton.ForeColor = Color.DarkRed;
             TheSaveButton.Location = new Point(170, 208);
             TheSaveButton.Name = "TheSaveButton";
             TheSaveButton.Size = new Size(229, 54);
             TheSaveButton.TabIndex = 2;
-            TheSaveButton.Text = "Save";
-            TheSaveButton.UseVisualStyleBackColor = true;
+            TheSaveButton.Text = "Continue";
+            TheSaveButton.UseVisualStyleBackColor = false;
             TheSaveButton.Click += SaveButton_Click;
             // 
             // UsernameLabel
             // 
             UsernameLabel.AutoSize = true;
+            UsernameLabel.BackColor = Color.Black;
+            UsernameLabel.ForeColor = Color.DarkRed;
             UsernameLabel.Location = new Point(12, 62);
             UsernameLabel.Name = "UsernameLabel";
             UsernameLabel.Size = new Size(195, 20);
@@ -74,6 +80,8 @@
             // PasswordLabel
             // 
             PasswordLabel.AutoSize = true;
+            PasswordLabel.BackColor = Color.Black;
+            PasswordLabel.ForeColor = Color.DarkRed;
             PasswordLabel.Location = new Point(12, 148);
             PasswordLabel.Name = "PasswordLabel";
             PasswordLabel.Size = new Size(190, 20);
@@ -95,6 +103,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Black;
             ClientSize = new Size(582, 289);
             Controls.Add(SignUpButton);
             Controls.Add(PasswordLabel);

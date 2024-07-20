@@ -32,7 +32,7 @@ namespace SecureAppProject
             {
                 securePassword.AppendChar(x);
             }
-             
+
             if (!inputValidation.ValidatePassword(securePassword))
             {
                 MessageBox.Show("Password requirements not met! Please ensure you are meeting the criteria: \n\t* Have at least 12 characters. \n\t* Have at least 1 symbol. \n\t* Have at least 1 Uppercase and Lowercase Letter. \n\t* Have at least 1 number.");
@@ -40,23 +40,23 @@ namespace SecureAppProject
             }
 
             securePassword.MakeReadOnly();
-            
-            SecureFeatures.SignUp(filename, username, securePassword);
 
-            bool isVerified = SecureFeatures.VerifyPassword(filename, username, securePassword);
+            MFASetup setup = new MFASetup();
+            setup.ShowDialog();
 
-            if (isVerified)
+            string secretKey = setup.SecretKey;
+
+            if (string.IsNullOrEmpty(secretKey))
             {
-                MessageBox.Show("Congratulations! Password and Username are available. Please continue on to Multi-Factor Authorization Setup.");
+                MessageBox.Show("MFA setup incomplete.");
+                return;
             }
 
-            else
-            {
-                MessageBox.Show("Oh no! An error occured.");
-            }
-            
+            SecureFeatures.SignUp(filename, username, securePassword, secretKey);
+
+            MessageBox.Show("Sign Up was successful! You can now login.");
+
             return;
-
         }
 
         private void UsernameButton_TextChanged(object sender, EventArgs e)

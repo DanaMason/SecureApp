@@ -19,3 +19,5 @@ C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProj
 C:\Users\gamin\SecureApp\SecureAppProject\bin\Debug\net6.0-windows\Otp.NET.dll
 C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.csproj.CopyComplete
 C:\Users\gamin\SecureApp\SecureAppProject\bin\Debug\net6.0-windows\QRCoder.dll
+C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.MFASetup.resources
+C:\Users\gamin\SecureApp\SecureAppProject\obj\Debug\net6.0-windows\SecureAppProject.MFAInputForm.resources

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Linq;
 using System.Text;
 using System.Security;
 using System.Runtime.InteropServices;
+using System.Reflection.Emit;
 
 namespace SecureAppProject
 {
@@ -178,9 +180,9 @@ namespace SecureAppProject
         }
 
         // Stores the recently created data into a file.
-        public static void StorePasswordToFile(string filename, string username, byte[] encryptedData, byte[] aesKey, byte[] aesIV, RSAParameters rsaKey)
+        public static void StorePasswordToFile(string filename, string username, byte[] encryptedData, byte[] aesKey, byte[] aesIV, RSAParameters rsaKey, string mfaData)
         {
-            using (var stream = new FileStream(filename, FileMode.Create))
+            using (var stream = new FileStream(filename, FileMode.Append, FileAccess.Write))
             using (var writer = new BinaryWriter(stream))
             {
                 // Goes through and writes each piece of data to the file.
@@ -196,12 +198,13 @@ namespace SecureAppProject
                 writer.Write(rsaKey.Exponent);
                 writer.Write(encryptedData.Length);
                 writer.Write(encryptedData);
+                writer.Write(mfaData);
             }
         }
 
         // Verifies the password for a given username. 
         
-        public static bool VerifyPassword(string filename, string username, SecureString securePassword)
+        public static bool VerifyPassword(string filename, string username, SecureString securePassword, string code)
         {
             IntPtr passwordBSTR = Marshal.SecureStringToBSTR(securePassword);
             string password = Marshal.PtrToStringBSTR(passwordBSTR);
@@ -233,6 +236,7 @@ namespace SecureAppProject
                             var rsaExponent = reader.ReadBytes(rsaExponentLength);
                             var encryptedDataLength = reader.ReadInt32();
                             var encryptedData = reader.ReadBytes(encryptedDataLength);
+                            var secretCode = reader.ReadString();
                             
                             // If statement to decrypt the data, rehash/salt/encrypt it, and compare the two.
 
@@ -247,7 +251,6 @@ namespace SecureAppProject
                                 // Decrypts and re-encrypts.
 
                                 var decryptedData = Decryption(encryptedData, aesKey, aesIV);
-                                
                                 var salt = new byte[SaltSize];
                                 var storedSignedHash = new byte[decryptedData.Length - SaltSize];
 
@@ -263,7 +266,7 @@ namespace SecureAppProject
 
                                     if (isPasswordVerified)
                                     {
-                                        return true;
+                                        return MultiFactorAuthentication.ValidateTotp(secretCode, code);
                                     }
                                 }
                             }
@@ -282,7 +285,7 @@ namespace SecureAppProject
         }
 
         // Function to connect the SignUp Process functions.
-        public static void SignUp(string filename, string username, SecureString SecurePassword)
+        public static void SignUp(string filename, string username, SecureString SecurePassword, string mfaSecret)
         {
             if (DoesUsernameExist(filename, username))
             {
@@ -301,7 +304,7 @@ namespace SecureAppProject
                 byte[] aesIV;
                 byte[] encryptedData = HashSignAndEncrypt(password, rsaKey, out aesKey, out aesIV);
 
-                StorePasswordToFile(filename, username, encryptedData, aesKey, aesIV, rsaKey);
+                StorePasswordToFile(filename, username, encryptedData, aesKey, aesIV, rsaKey, mfaSecret);
             }
 
             finally
@@ -310,11 +313,34 @@ namespace SecureAppProject
             }
         }
 
-        // Function to ensure the given Username is unique.
+        // Reads the file, and skips the non-username information.
         public static bool DoesUsernameExist(string filename, string username)
         {
-            var lines = File.ReadAllLines(filename);
-            return lines.Any(line => line.Split(',')[0] == username);
+            try
+            {
+                using (var stream = new FileStream(filename, FileMode.Open))
+                using (var reader = new BinaryReader(stream))
+                {
+                    while (reader.BaseStream.Position < reader.BaseStream.Length)
+                    {
+                        var storedUsername = reader.ReadString();
+                        reader.BaseStream.Seek(reader.ReadInt32() + 4, SeekOrigin.Current);
+                        reader.BaseStream.Seek(reader.ReadInt32() + 4, SeekOrigin.Current); 
+                        reader.BaseStream.Seek(reader.ReadInt32(), SeekOrigin.Current); 
+                        reader.ReadString(); 
+
+                        if (storedUsername == username)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error checking username existence: {ex.Message}");
+            }
+            return false;
         }
     }
 }

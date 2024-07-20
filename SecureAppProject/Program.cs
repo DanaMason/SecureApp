@@ -5,9 +5,7 @@ namespace SecureAppProject
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        // Application to demonstrate common security measures that applications and software should demonstrate.
         [STAThread]
         static void Main()
         {
@@ -19,7 +17,8 @@ namespace SecureAppProject
     }
 }
 
-// Now must do things like establish a sign up user thing for creating Username-Password combinations, as well as
-// Multi-factor authentication, SecureStrings, Error Handling, File Seperation, POTENTIALLY logging, development of app,
-// and finally, just ensuring proper password and username life-cycle (especially storage and successful retrieval/collection).
+// Error Handling, POTENTIALLY logging, development of app
 // Looking into how to implement HTTPS and POTENTIALLY Website attack preventions is also worthwhile to look at.
+// Having a problem where inputting two back to back users results in the first one entered being overwritten. 
+// Additionally, Error when no file exists and you try signing up.
+// Need bank account balance to be added for development of app.

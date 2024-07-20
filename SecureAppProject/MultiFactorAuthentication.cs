@@ -11,7 +11,7 @@ namespace SecureAppProject
 {
     internal class MultiFactorAuthentication
     {
-        // Generates a randomized 20-byte key
+        // Quickly generates a randomized 20-byte key for this program.
         public static string GenerateTotpSecret()
         {
             var key = KeyGeneration.GenerateRandomKey(20);
@@ -19,23 +19,10 @@ namespace SecureAppProject
             return base32Secret;
         }
 
-        public static Bitmap GenerateTotpQrCode(string username, string secret)
+        // Validates the information so it ensures the MFA information matches.
+        public static bool ValidateTotp(string key, string code)
         {
-            var totp = new Totp(Base32Encoding.ToBytes(secret));
-            string uri = $"otpauth://totp/SecureAppProject:{username}?secret={secret}&issuer=SecureAppProject";
-
-
-            using (var qrGenerator = new QRCodeGenerator())
-            {
-                var qrCodeData = qrGenerator.CreateQrCode(uri, QRCodeGenerator.ECCLevel.Q);
-                var qrCode = new QRCode(qrCodeData);
-                return qrCode.GetGraphic(20);
-            }
-        }
-
-        public static bool ValidateTotp(string secret, string code)
-        {
-            var totp = new Totp(Base32Encoding.ToBytes(secret));
+            var totp = new Totp(Base32Encoding.ToBytes(key));
             return totp.VerifyTotp(code, out long timeStepMatched, VerificationWindow.RfcSpecifiedNetworkDelay);
         }
 
