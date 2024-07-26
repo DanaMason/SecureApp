@@ -48,6 +48,7 @@
             // EnteredCodedInformationText
             // 
             EnteredCodedInformationText.BackColor = Color.DarkRed;
+            EnteredCodedInformationText.ForeColor = Color.White;
             EnteredCodedInformationText.Location = new Point(142, 65);
             EnteredCodedInformationText.Name = "EnteredCodedInformationText";
             EnteredCodedInformationText.Size = new Size(167, 27);

@@ -74,6 +74,7 @@
             // KeyBox
             // 
             KeyBox.BackColor = Color.DarkRed;
+            KeyBox.ForeColor = Color.White;
             KeyBox.Location = new Point(163, 53);
             KeyBox.Name = "KeyBox";
             KeyBox.Size = new Size(223, 27);

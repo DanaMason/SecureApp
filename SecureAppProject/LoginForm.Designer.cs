@@ -39,6 +39,7 @@
             // UsernameText
             // 
             UsernameText.BackColor = Color.DarkRed;
+            UsernameText.ForeColor = Color.White;
             UsernameText.Location = new Point(263, 59);
             UsernameText.Name = "UsernameText";
             UsernameText.Size = new Size(308, 27);
@@ -48,6 +49,7 @@
             // PasswordText
             // 
             PasswordText.BackColor = Color.DarkRed;
+            PasswordText.ForeColor = Color.White;
             PasswordText.Location = new Point(263, 145);
             PasswordText.Name = "PasswordText";
             PasswordText.Size = new Size(308, 27);

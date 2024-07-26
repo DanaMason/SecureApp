@@ -186,24 +186,33 @@ namespace SecureAppProject
             using (var writer = new BinaryWriter(stream))
             {
                 // Goes through and writes each piece of data to the file.
+                writer.Write("USER_START");
 
                 writer.Write(username);
+
                 writer.Write(aesKey.Length);
                 writer.Write(aesKey);
+
                 writer.Write(aesIV.Length);
                 writer.Write(aesIV);
+
                 writer.Write(rsaKey.Modulus.Length);    // Ignore I think. Issue may be in UserRSA.
                 writer.Write(rsaKey.Modulus);
+
                 writer.Write(rsaKey.Exponent.Length);   // Ignore I think. Issue may be in UserRSA.
                 writer.Write(rsaKey.Exponent);
+
                 writer.Write(encryptedData.Length);
                 writer.Write(encryptedData);
+
                 writer.Write(mfaData);
+
+                writer.Write("USER_END");
             }
         }
 
         // Verifies the password for a given username. 
-        
+
         public static bool VerifyPassword(string filename, string username, SecureString securePassword, string code)
         {
             IntPtr passwordBSTR = Marshal.SecureStringToBSTR(securePassword);
@@ -225,19 +234,41 @@ namespace SecureAppProject
                         {
                             // Reads the information for comparison.
 
+                            var start = reader.ReadString();
+
+                            if (start != "USER_START")
+                            {
+                                MessageBox.Show("Corrupted file format.");
+                                return false;
+                            }
+
                             var storedUsername = reader.ReadString();
+
                             var aesKeyLength = reader.ReadInt32();
                             var aesKey = reader.ReadBytes(aesKeyLength);
+
                             var aesIVLength = reader.ReadInt32();
                             var aesIV = reader.ReadBytes(aesIVLength);
+
                             var rsaModulusLength = reader.ReadInt32();
                             var rsaModulus = reader.ReadBytes(rsaModulusLength);
+
                             var rsaExponentLength = reader.ReadInt32();
                             var rsaExponent = reader.ReadBytes(rsaExponentLength);
+
                             var encryptedDataLength = reader.ReadInt32();
                             var encryptedData = reader.ReadBytes(encryptedDataLength);
+
                             var secretCode = reader.ReadString();
-                            
+
+                            var end = reader.ReadString();
+
+                            if (end != "USER_END")
+                            {
+                                MessageBox.Show("Corrupted file format.");
+                                return false;
+                            }
+
                             // If statement to decrypt the data, rehash/salt/encrypt it, and compare the two.
 
                             if (storedUsername == username)
@@ -259,7 +290,7 @@ namespace SecureAppProject
 
                                 var hashToVerify = HashPassword(password, salt);
 
-                                using (var rsa = RSA.Create())                                                          
+                                using (var rsa = RSA.Create())
                                 {
                                     rsa.ImportParameters(rsaParameters);
                                     bool isPasswordVerified = rsa.VerifyData(hashToVerify, storedSignedHash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
@@ -318,19 +349,56 @@ namespace SecureAppProject
         {
             try
             {
-                using (var stream = new FileStream(filename, FileMode.Open))
+                using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
                 using (var reader = new BinaryReader(stream))
                 {
+                    if (stream.Length == 0)
+                    {
+                        MessageBox.Show("Error! Database file is empty");
+                        return false;
+                    }
+
                     while (reader.BaseStream.Position < reader.BaseStream.Length)
                     {
+                        var start = reader.ReadString();
+                        if (start != "USER_START")
+                        {
+                            // Seek back to the start of the record if the format is unexpected
+                            reader.BaseStream.Seek(-start.Length, SeekOrigin.Current);
+                            continue;
+                        }
+
                         var storedUsername = reader.ReadString();
-                        reader.BaseStream.Seek(reader.ReadInt32() + 4, SeekOrigin.Current);
-                        reader.BaseStream.Seek(reader.ReadInt32() + 4, SeekOrigin.Current); 
-                        reader.BaseStream.Seek(reader.ReadInt32(), SeekOrigin.Current); 
-                        reader.ReadString(); 
+
+                        // Skip the rest of the fields in the record
+                        var aesKeyLength = reader.ReadInt32();
+                        reader.BaseStream.Seek(aesKeyLength, SeekOrigin.Current);
+
+                        var aesIVLength = reader.ReadInt32();
+                        reader.BaseStream.Seek(aesIVLength, SeekOrigin.Current);
+
+                        var rsaModulusLength = reader.ReadInt32();
+                        reader.BaseStream.Seek(rsaModulusLength, SeekOrigin.Current);
+
+                        var rsaExponentLength = reader.ReadInt32();
+                        reader.BaseStream.Seek(rsaExponentLength, SeekOrigin.Current);
+
+                        var encryptedDataLength = reader.ReadInt32();
+                        reader.BaseStream.Seek(encryptedDataLength, SeekOrigin.Current);
+
+                        reader.ReadString(); // Skip mfaData
+
+                        var end = reader.ReadString();
+                        if (end != "USER_END")
+                        {
+                            // Seek back to the start of the record if the format is unexpected
+                            reader.BaseStream.Seek(-end.Length, SeekOrigin.Current);
+                            continue;
+                        }
 
                         if (storedUsername == username)
                         {
+                            MessageBox.Show("Username already exists!");
                             return true;
                         }
                     }

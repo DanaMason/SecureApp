@@ -19,12 +19,13 @@ namespace SecureAppProject
         public LoginForm()
         {
             InitializeComponent();
+            PasswordText.PasswordChar = '●';
         }
 
         // Checks the information given to login.
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            string username = UsernameText.Text;
+             string username = UsernameText.Text;
             SecureString securePassword = new SecureString();
             string filename = "secureFile.dat";
 
@@ -44,9 +45,10 @@ namespace SecureAppProject
 
                 if (isMfaVerified)
                 {
-                    MessageBox.Show("Login successful! Put your post-login secure information here! :D");
-                        // Can later continue onto post-login information...
+                    MessageBox.Show("Login successful!");
                     this.Hide();
+                    PostLoginScreen postLogin = new PostLoginScreen();
+                    postLogin.Show();
                 }
 
                 else

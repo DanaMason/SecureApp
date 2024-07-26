@@ -74,6 +74,7 @@
             // UsernameButton
             // 
             UsernameButton.BackColor = Color.DarkRed;
+            UsernameButton.ForeColor = Color.White;
             UsernameButton.Location = new Point(367, 81);
             UsernameButton.Name = "UsernameButton";
             UsernameButton.Size = new Size(159, 27);
@@ -83,6 +84,7 @@
             // PasswordButton
             // 
             PasswordButton.BackColor = Color.DarkRed;
+            PasswordButton.ForeColor = Color.White;
             PasswordButton.Location = new Point(367, 136);
             PasswordButton.Name = "PasswordButton";
             PasswordButton.Size = new Size(159, 27);

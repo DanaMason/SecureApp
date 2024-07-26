@@ -18,6 +18,7 @@ namespace SecureAppProject
         public SignUpForm()
         {
             InitializeComponent();
+            PasswordButton.PasswordChar = '●';
         }
 
         // Creates a secureString password and username to send to the proceeding functions
