@@ -29,6 +29,12 @@ namespace SecureAppProject
             InputValidation inputValidation = new InputValidation();
             SecureString securePassword = new SecureString();
 
+            if(string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("Missing a username.");
+                return;
+            }
+
             foreach (char x in PasswordButton.Text)
             {
                 securePassword.AppendChar(x);

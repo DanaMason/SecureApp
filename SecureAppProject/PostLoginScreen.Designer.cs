@@ -35,6 +35,8 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.Black;
+            label1.ForeColor = Color.DarkRed;
             label1.Location = new Point(82, 31);
             label1.Name = "label1";
             label1.Size = new Size(162, 20);
@@ -43,18 +45,21 @@
             // 
             // ExitBtn
             // 
+            ExitBtn.BackColor = Color.Black;
+            ExitBtn.ForeColor = Color.DarkRed;
             ExitBtn.Location = new Point(12, 84);
             ExitBtn.Name = "ExitBtn";
             ExitBtn.Size = new Size(310, 41);
             ExitBtn.TabIndex = 1;
             ExitBtn.Text = "Exit";
-            ExitBtn.UseVisualStyleBackColor = true;
+            ExitBtn.UseVisualStyleBackColor = false;
             ExitBtn.Click += ExitBtn_Click;
             // 
             // PostLoginScreen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Black;
             ClientSize = new Size(334, 157);
             Controls.Add(ExitBtn);
             Controls.Add(label1);
